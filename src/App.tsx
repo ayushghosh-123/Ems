@@ -5,20 +5,26 @@ import EmployeeDashboard from "./Component/Dashbord/EmployeeDashboard";
 import AdminDashboard from "./Component/Dashbord/AdminDashboard";
 import { AuthContext } from "./Contex/Authprovider";
 
-function App() {
-  const [user, setUser] = useState<string | null>(null);
-  const [loggedInUserData, setLoggedInUserData] = useState(null);
-  const authData = useContext(AuthContext);
+// Type definitions
+type UserRole = "admin" | "employee" | null;
 
+function App() {
+  const [user, setUser] = useState<UserRole>(null);
+  const [loggedInUserData, setLoggedInUserData] = useState<any>(null); // You should replace `any` with a specific employee type
+  const authData = useContext(AuthContext);
+  console.log(authData)
+
+  // Keep this if you want to persist login across refreshes
   useEffect(() => {
     if (authData) {
       const loggedInUser = localStorage.getItem("loggedInUser");
       if (loggedInUser) {
         const parsedUser = JSON.parse(loggedInUser);
-        setUser(parsedUser.role);
+        setUser(parsedUser.role as UserRole);
       }
     }
   }, [authData]);
+
   const handleLogin = (email: string, password: string) => {
     if (!authData) {
       alert("Data not loaded");
@@ -35,13 +41,13 @@ function App() {
 
     if (foundAdmin) {
       setUser("admin");
-      localStorage.setItem("loggedInUser", JSON.stringify({ role: "admin" }));
+      localStorage.setItem("loggedInUser", JSON.stringify({ UserRole: "admin" , email: foundAdmin.email }));
     } else if (foundEmployee) {
       setUser("employee");
-      setLoggedInUserData(foundEmployee); // ✅ Set the specific employee data
+      setLoggedInUserData(foundEmployee);
       localStorage.setItem(
         "loggedInUser",
-        JSON.stringify({ role: "employee", email: foundEmployee.email }) // optional
+        JSON.stringify({ UserRole: "employee", email: foundEmployee.email })
       );
     } else {
       alert("Invalid credentials");
@@ -62,3 +68,4 @@ function App() {
 }
 
 export default App;
+

@@ -1,4 +1,31 @@
-const employee = [
+// Localstorage.ts
+
+interface Task {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  project: string;
+  active: boolean;
+  newTask: boolean;
+  completed: boolean;
+  failed: boolean;
+}
+
+interface Employee {
+  id: number;
+  email: string;
+  password: string;
+  tasks: Task[];
+}
+
+interface Admin {
+  id: number;
+  email: string;
+  password: string;
+}
+
+const employees: Employee[] = [
   {
     id: 1,
     email: "employee1@example.com",
@@ -13,7 +40,7 @@ const employee = [
         active: true,
         newTask: true,
         completed: false,
-        failed: false
+        failed: false,
       },
       {
         title: "Update API docs",
@@ -24,7 +51,7 @@ const employee = [
         active: false,
         newTask: false,
         completed: true,
-        failed: false
+        failed: false,
       },
       {
         title: "UI Testing",
@@ -35,9 +62,9 @@ const employee = [
         active: true,
         newTask: false,
         completed: false,
-        failed: false
-      }
-    ]
+        failed: false,
+      },
+    ],
   },
   {
     id: 2,
@@ -53,7 +80,7 @@ const employee = [
         active: true,
         newTask: true,
         completed: false,
-        failed: false
+        failed: false,
       },
       {
         title: "Fix mobile layout",
@@ -64,7 +91,7 @@ const employee = [
         active: false,
         newTask: false,
         completed: true,
-        failed: false
+        failed: false,
       },
       {
         title: "Add notifications",
@@ -75,7 +102,7 @@ const employee = [
         active: true,
         newTask: false,
         completed: false,
-        failed: true
+        failed: true,
       },
       {
         title: "Test payment flow",
@@ -86,9 +113,9 @@ const employee = [
         active: false,
         newTask: true,
         completed: false,
-        failed: false
-      }
-    ]
+        failed: false,
+      },
+    ],
   },
   {
     id: 3,
@@ -104,7 +131,7 @@ const employee = [
         active: true,
         newTask: true,
         completed: false,
-        failed: false
+        failed: false,
       },
       {
         title: "Code review",
@@ -115,7 +142,7 @@ const employee = [
         active: false,
         newTask: false,
         completed: true,
-        failed: false
+        failed: false,
       },
       {
         title: "Security audit",
@@ -126,7 +153,7 @@ const employee = [
         active: true,
         newTask: false,
         completed: true,
-        failed: false
+        failed: false,
       },
       {
         title: "Analytics setup",
@@ -137,7 +164,7 @@ const employee = [
         active: true,
         newTask: true,
         completed: false,
-        failed: false
+        failed: false,
       },
       {
         title: "Fix 500 error",
@@ -148,9 +175,9 @@ const employee = [
         active: false,
         newTask: false,
         completed: true,
-        failed: false
-      }
-    ]
+        failed: false,
+      },
+    ],
   },
   {
     id: 4,
@@ -166,7 +193,7 @@ const employee = [
         active: true,
         newTask: false,
         completed: false,
-        failed: false
+        failed: false,
       },
       {
         title: "Design landing page",
@@ -177,9 +204,9 @@ const employee = [
         active: false,
         newTask: true,
         completed: false,
-        failed: false
-      }
-    ]
+        failed: false,
+      },
+    ],
   },
   {
     id: 5,
@@ -195,7 +222,7 @@ const employee = [
         active: true,
         newTask: true,
         completed: false,
-        failed: false
+        failed: false,
       },
       {
         title: "Database backup",
@@ -206,7 +233,7 @@ const employee = [
         active: false,
         newTask: false,
         completed: true,
-        failed: false
+        failed: false,
       },
       {
         title: "Update user guide",
@@ -217,31 +244,28 @@ const employee = [
         active: false,
         newTask: true,
         completed: false,
-        failed: false
-      }
-    ]
-  }
+        failed: false,
+      },
+    ],
+  },
 ];
 
-const admin = [
+const admin: Admin[] = [
   {
     id: 1,
-    email: "+",
-    password: "123"
-  }
+    email: "admin@example.com", // ✅ Corrected from "+"
+    password: "123",
+  },
 ];
 
+export const setLocalStorage = (): void => {
+  localStorage.setItem("employee", JSON.stringify(employees));
+  localStorage.setItem("admin", JSON.stringify(admin));
+};
 
-export const setLocalStorage = () =>{
-    localStorage.setItem('employee', JSON.stringify(employee))
-    localStorage.setItem('admin', JSON.stringify(admin))
-}
+export const getLocalStorage = (): { employees: Employee[]; admin: Admin[] } => {
+  const employees = JSON.parse(localStorage.getItem("employee") || "[]");
+  const admin = JSON.parse(localStorage.getItem("admin") || "[]");
 
-export const getLocalStorage = () =>{
-    const employee = JSON.parse(localStorage.getItem('employee') || '[]');
-    const admin = JSON.parse(localStorage.getItem('admin') || '[]');
-    
-    console.log(employee, admin)
-
-    return{employee, admin}
-}
+  return { employees, admin };
+};
